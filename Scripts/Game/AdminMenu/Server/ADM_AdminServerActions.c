@@ -5,6 +5,7 @@ modded class SCR_PlayerController
 	protected ref array<int> m_aADMGodModePlayers = new array<int>();
 	protected bool m_bADMGodModeActive;
 	protected bool m_bADMFastRun;
+	protected ref array<IEntity> m_aADMKillQueue = new array<IEntity>();
 
 	//---------------------------------------------------------------------------------------------
 	// Public request methods (client-side, trigger server RPCs)
@@ -87,6 +88,11 @@ modded class SCR_PlayerController
 	void ADM_RequestToggleFastRun()
 	{
 		Rpc(ADM_RpcAsk_ToggleFastRun);
+	}
+
+	void ADM_RequestKillNearbyNPCs()
+	{
+		Rpc(ADM_RpcAsk_KillNearbyNPCs);
 	}
 
 	//---------------------------------------------------------------------------------------------
@@ -536,6 +542,19 @@ modded class SCR_PlayerController
 		else
 			m_aADMGodModePlayers.Remove(idx);
 
+		// Apply invulnerability immediately via EnableDamageHandling (EP4 pattern)
+		IEntity target = ADM_GetPlayerEntity(targetPlayerId);
+		if (target)
+		{
+			SCR_CharacterDamageManagerComponent dm = SCR_CharacterDamageManagerComponent.Cast(
+				target.FindComponent(SCR_CharacterDamageManagerComponent));
+			if (dm)
+			{
+				if (enabling) dm.FullHeal();
+				dm.EnableDamageHandling(!enabling);
+			}
+		}
+
 		if (!m_bADMGodModeActive && !m_aADMGodModePlayers.IsEmpty())
 		{
 			m_bADMGodModeActive = true;
@@ -553,6 +572,7 @@ modded class SCR_PlayerController
 		Print(ADM_AdminMenuConstants.LOG_PREFIX + "God mode " + godModeState + " for playerId=" + targetPlayerId, LogLevel.NORMAL);
 	}
 
+	// Backup tick: re-applies EnableDamageHandling(false) in case the player respawned (new entity)
 	protected void ADM_GodModeHeal()
 	{
 		if (!m_aADMGodModePlayers || m_aADMGodModePlayers.IsEmpty())
@@ -573,7 +593,10 @@ modded class SCR_PlayerController
 			SCR_CharacterDamageManagerComponent dm = SCR_CharacterDamageManagerComponent.Cast(
 				target.FindComponent(SCR_CharacterDamageManagerComponent));
 			if (dm)
+			{
 				dm.FullHeal();
+				dm.EnableDamageHandling(false);
+			}
 		}
 
 		if (m_aADMGodModePlayers.IsEmpty())
@@ -632,34 +655,87 @@ modded class SCR_PlayerController
 	protected void ADM_RpcDo_FastRunResult(bool enabled)
 	{
 		m_bADMFastRun = enabled;
-		if (m_bADMFastRun)
-			GetGame().GetCallqueue().CallLater(ADM_FastRunClientTick, 50, true);
-		else
-			GetGame().GetCallqueue().Remove(ADM_FastRunClientTick);
+
+		// Hook into EP4's OnPrepareControls invoker so we fire every frame before input is read
+		IEntity player = GetControlledEntity();
+		if (player)
+		{
+			SCR_CharacterControllerComponent ctrl = SCR_CharacterControllerComponent.Cast(
+				player.FindComponent(SCR_CharacterControllerComponent));
+			if (ctrl)
+			{
+				ctrl.m_EP4_OnPrepareControls.Remove(ADM_FastRunOnPrepareControls);
+				if (enabled)
+					ctrl.m_EP4_OnPrepareControls.Insert(ADM_FastRunOnPrepareControls);
+			}
+		}
+
 		ADM_AdminMenuOverlay.OnFastRunChanged(enabled);
 	}
 
-	protected void ADM_FastRunClientTick()
+	// Fires every frame (via EP4's OnPrepareControls hook) while fast run is active.
+	// Forces sprint input and adds a physics velocity boost on top of sprint speed.
+	protected void ADM_FastRunOnPrepareControls(IEntity owner, ActionManager am, float dt, bool isPlayer)
 	{
-		if (!m_bADMFastRun)
-		{
-			GetGame().GetCallqueue().Remove(ADM_FastRunClientTick);
-			return;
-		}
+		if (!m_bADMFastRun) return;
 
-		IEntity player = GetControlledEntity();
-		if (!player)
-			return;
+		InputManager im = GetGame().GetInputManager();
+		if (im)
+			im.SetActionValue("CharacterSprint", 1.0);
 
-		Physics phys = player.GetPhysics();
-		if (!phys)
-			return;
-
+		if (!owner) return;
+		Physics phys = owner.GetPhysics();
+		if (!phys) return;
 		vector vel = phys.GetVelocity();
-		float hSpeedSq = vel[0] * vel[0] + vel[2] * vel[2];
-		if (hSpeedSq < 0.25)
-			return;
+		float hx = vel[0];
+		float hz = vel[2];
+		if (hx * hx + hz * hz > 0.04)
+			phys.SetVelocity(Vector(hx * 3.0, vel[1], hz * 3.0));
+	}
 
-		phys.SetVelocity(Vector(vel[0] * 6, vel[1], vel[2] * 6));
+	//---------------------------------------------------------------------------------------------
+	// Kill nearby NPCs
+
+	// Collect callback for QueryEntitiesBySphere — gathers AI-controlled characters only.
+	protected bool ADM_KillNearbyCallback(IEntity entity)
+	{
+		if (!entity) return true;
+
+		// Skip player-controlled characters
+		if (GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(entity) > 0) return true;
+
+		// Only target entities with AI control
+		AIControlComponent aiCtrl = AIControlComponent.Cast(entity.FindComponent(AIControlComponent));
+		if (!aiCtrl) return true;
+
+		m_aADMKillQueue.Insert(entity);
+		return true;
+	}
+
+	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
+	protected void ADM_RpcAsk_KillNearbyNPCs()
+	{
+		if (!ADM_CanRunAdminAction()) return;
+
+		IEntity requester = ADM_GetPlayerEntity(ADM_GetRequesterPlayerId());
+		if (!requester) return;
+
+		vector origin = requester.GetOrigin();
+		m_aADMKillQueue.Clear();
+		GetGame().GetWorld().QueryEntitiesBySphere(origin, 150.0, ADM_KillNearbyCallback, null, EQueryEntitiesFlags.ALL);
+
+		int killed = 0;
+		foreach (IEntity entity : m_aADMKillQueue)
+		{
+			if (!entity) continue;
+			DamageManagerComponent dm = DamageManagerComponent.Cast(entity.FindComponent(DamageManagerComponent));
+			if (!dm) continue;
+			HitZone hz = dm.GetDefaultHitZone();
+			if (!hz) continue;
+			hz.HandleDamage(10000, EDamageType.KINETIC, null);
+			killed++;
+		}
+		m_aADMKillQueue.Clear();
+		Print(ADM_AdminMenuConstants.LOG_PREFIX + "Kill nearby NPCs: killed=" + killed, LogLevel.NORMAL);
 	}
 }

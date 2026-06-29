@@ -423,7 +423,8 @@ class ADM_AdminMenuOverlay : ScriptedWidgetEventHandler
 		AddButton("Button0", "Player management");
 		AddButton("Button1", "Teleport tools");
 		AddButton("Button2", "Spawning tools");
-		AddButton("Button3", "Close");
+		AddButton("Button3", "Kill all nearby NPCs");
+		AddButton("Button4", "Close");
 		RefreshSelection();
 		Print(ADM_AdminMenuConstants.LOG_PREFIX + "ShowMain() added " + m_aButtons.Count() + " buttons", LogLevel.NORMAL);
 	}
@@ -910,6 +911,10 @@ class ADM_AdminMenuOverlay : ScriptedWidgetEventHandler
 				case 0: ShowPlayers(); break;
 				case 1: ShowTeleport(); break;
 				case 2: ShowSpawn(); break;
+				case 3:
+					controller.ADM_RequestKillNearbyNPCs();
+					SetStatus("Killing all nearby NPCs within 150 m...");
+					break;
 				default: Close(); break;
 			}
 			return;
