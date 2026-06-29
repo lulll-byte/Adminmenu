@@ -74,26 +74,13 @@ class ADM_AdminMenuOverlay : ScriptedWidgetEventHandler
 
 	protected void DoPollNavKeys()
 	{
-		// Arrow keys conflict with map panning when the map is open — block UP/DOWN then
-		// but keep Enter working so you can still confirm a highlighted button (e.g. map cursor teleport).
-		bool mapOpen = SCR_MapEntity.GetMapInstance() != null;
+		bool upNow = Debug.KeyState(KeyCode.KC_UP);
+		if (upNow && !m_bNavUpWasDown) OnMenuUp(0, EActionTrigger.DOWN);
+		m_bNavUpWasDown = upNow;
 
-		if (!mapOpen)
-		{
-			bool upNow = Debug.KeyState(KeyCode.KC_UP);
-			if (upNow && !m_bNavUpWasDown) OnMenuUp(0, EActionTrigger.DOWN);
-			m_bNavUpWasDown = upNow;
-
-			bool downNow = Debug.KeyState(KeyCode.KC_DOWN);
-			if (downNow && !m_bNavDownWasDown) OnMenuDown(0, EActionTrigger.DOWN);
-			m_bNavDownWasDown = downNow;
-		}
-		else
-		{
-			// Reset so keys don't fire the instant the map closes
-			m_bNavUpWasDown = true;
-			m_bNavDownWasDown = true;
-		}
+		bool downNow = Debug.KeyState(KeyCode.KC_DOWN);
+		if (downNow && !m_bNavDownWasDown) OnMenuDown(0, EActionTrigger.DOWN);
+		m_bNavDownWasDown = downNow;
 
 		bool selNow = Debug.KeyState(KeyCode.KC_RETURN);
 		if (selNow && !m_bNavSelectWasDown) OnMenuSelect(0, EActionTrigger.DOWN);
