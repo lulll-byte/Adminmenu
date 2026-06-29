@@ -458,12 +458,13 @@ class ADM_AdminMenuOverlay : ScriptedWidgetEventHandler
 		m_iSelection = 0;
 		ClearButtons();
 		SetTitle("Teleport Tools");
-		SetStatus("Select a location or use player teleport.");
+		SetStatus("Select a map or use player teleport.");
 		SetInputs("", "", "");
-		AddButton("Button0", "Towns & Cities...");
-		AddButton("Button1", "Teleport TO player...");
-		AddButton("Button2", "Teleport player TO me...");
-		AddButton("Button3", "Back");
+		AddButton("Button0", "Everon...");
+		AddButton("Button1", "Chernarus...");
+		AddButton("Button2", "Teleport TO player...");
+		AddButton("Button3", "Teleport player TO me...");
+		AddButton("Button4", "Back");
 		RefreshSelection();
 	}
 
@@ -495,7 +496,7 @@ class ADM_AdminMenuOverlay : ScriptedWidgetEventHandler
 		m_ePage = ADM_AdminMenuPage.LOCATIONS;
 		m_iSelection = 0;
 		ClearButtons();
-		SetTitle("Locations - Everon Towns (1/2)");
+		SetTitle("Everon - Towns (1/2)");
 		SetStatus("Click a town to teleport. Height auto-computed from terrain.");
 		SetInputs("", "", "");
 		AddButton("Button0",  "Morton");
@@ -522,7 +523,7 @@ class ADM_AdminMenuOverlay : ScriptedWidgetEventHandler
 		m_ePage = ADM_AdminMenuPage.LOCATIONS_2;
 		m_iSelection = 0;
 		ClearButtons();
-		SetTitle("Locations - Towns & Airfields (2/2)");
+		SetTitle("Everon - Towns & Airfields (2/2)");
 		SetStatus("Click a location to teleport. Height auto-computed from terrain.");
 		SetInputs("", "", "");
 		AddButton("Button0", "Briars");
@@ -533,6 +534,58 @@ class ADM_AdminMenuOverlay : ScriptedWidgetEventHandler
 		AddButton("Button5", "[Airport] Tyrone Airfield");
 		AddButton("Button10", "Back to towns (1/2)...");
 		AddButton("Button11", "Back");
+		RefreshSelection();
+	}
+
+	//---------------------------------------------------------------------------------------------
+	// Page: Locations Chernarus page 1
+
+	protected void ShowLocationsChernarus()
+	{
+		Print(ADM_AdminMenuConstants.LOG_PREFIX + "ShowLocationsChernarus()", LogLevel.NORMAL);
+		m_ePage = ADM_AdminMenuPage.LOCATIONS_CHERNARUS;
+		m_iSelection = 0;
+		ClearButtons();
+		SetTitle("Chernarus - Major Cities (1/2)");
+		SetStatus("Click a location to teleport. Height auto-computed from terrain.");
+		SetInputs("", "", "");
+		AddButton("Button0",  "Chernogorsk");
+		AddButton("Button1",  "Elektrozavodsk");
+		AddButton("Button2",  "Berezino");
+		AddButton("Button3",  "Zelenogorsk");
+		AddButton("Button4",  "Krasnostav");
+		AddButton("Button5",  "Solnichniy");
+		AddButton("Button6",  "Kamyshovo");
+		AddButton("Button7",  "Mogilevka");
+		AddButton("Button8",  "Stary Sobor");
+		AddButton("Button9",  "Vybor");
+		AddButton("Button10", "More towns & Airfields...");
+		AddButton("Button11", "Back");
+		RefreshSelection();
+	}
+
+	//---------------------------------------------------------------------------------------------
+	// Page: Locations Chernarus page 2
+
+	protected void ShowLocationsChernarus2()
+	{
+		Print(ADM_AdminMenuConstants.LOG_PREFIX + "ShowLocationsChernarus2()", LogLevel.NORMAL);
+		m_ePage = ADM_AdminMenuPage.LOCATIONS_CHERNARUS_2;
+		m_iSelection = 0;
+		ClearButtons();
+		SetTitle("Chernarus - Towns & Airfields (2/2)");
+		SetStatus("Click a location to teleport. Height auto-computed from terrain.");
+		SetInputs("", "", "");
+		AddButton("Button0", "Novy Sobor");
+		AddButton("Button1", "Kabanino");
+		AddButton("Button2", "Rogovo");
+		AddButton("Button3", "Pavlovo");
+		AddButton("Button4", "Svetlojarsk");
+		AddButton("Button5", "[Airfield] NWAF");
+		AddButton("Button6", "[Airfield] Balota");
+		AddButton("Button7", "[Airfield] Krasnostav Airfield");
+		AddButton("Button10", "Back to cities (1/2)...");  // array idx 8
+		AddButton("Button11", "Back");                      // array idx 9
 		RefreshSelection();
 	}
 
@@ -929,8 +982,9 @@ class ADM_AdminMenuOverlay : ScriptedWidgetEventHandler
 			switch (m_iSelection)
 			{
 				case 0: ShowLocations(); break;
-				case 1: ShowTeleportSelectPlayer(ADM_TeleportSelectMode.TO_PLAYER); break;
-				case 2: ShowTeleportSelectPlayer(ADM_TeleportSelectMode.PLAYER_TO_ME); break;
+				case 1: ShowLocationsChernarus(); break;
+				case 2: ShowTeleportSelectPlayer(ADM_TeleportSelectMode.TO_PLAYER); break;
+				case 3: ShowTeleportSelectPlayer(ADM_TeleportSelectMode.PLAYER_TO_ME); break;
 				default: ShowMain(); break;
 			}
 			return;
@@ -1050,6 +1104,46 @@ class ADM_AdminMenuOverlay : ScriptedWidgetEventHandler
 				case 9:  SelectItemAndReturn(ADM_ItemPrefabs.TourniquetUS,  "Tourniquet US"); break;
 				case 10: ShowSpawnItems(); break;
 				default: ShowSpawn(); break;
+			}
+			return;
+		}
+
+		// -- Chernarus towns page 1 -------------------------------------------
+		if (m_ePage == ADM_AdminMenuPage.LOCATIONS_CHERNARUS)
+		{
+			switch (m_iSelection)
+			{
+				case 0:  controller.ADM_RequestTeleportSelf(Vector(7450, 0, 2350)); break; // Chernogorsk
+				case 1:  controller.ADM_RequestTeleportSelf(Vector(11023, 0, 2281)); break; // Elektrozavodsk
+				case 2:  controller.ADM_RequestTeleportSelf(Vector(11848, 0, 9062)); break; // Berezino
+				case 3:  controller.ADM_RequestTeleportSelf(Vector(2648, 0, 2476)); break; // Zelenogorsk
+				case 4:  controller.ADM_RequestTeleportSelf(Vector(11130, 0, 11015)); break; // Krasnostav
+				case 5:  controller.ADM_RequestTeleportSelf(Vector(11694, 0, 5576)); break; // Solnichniy
+				case 6:  controller.ADM_RequestTeleportSelf(Vector(11017, 0, 3402)); break; // Kamyshovo
+				case 7:  controller.ADM_RequestTeleportSelf(Vector(7185, 0, 5583)); break; // Mogilevka
+				case 8:  controller.ADM_RequestTeleportSelf(Vector(6001, 0, 6695)); break; // Stary Sobor
+				case 9:  controller.ADM_RequestTeleportSelf(Vector(4731, 0, 9213)); break; // Vybor
+				case 10: ShowLocationsChernarus2(); break;
+				default: ShowTeleport(); break;
+			}
+			return;
+		}
+
+		// -- Chernarus towns page 2 + airfields --------------------------------
+		if (m_ePage == ADM_AdminMenuPage.LOCATIONS_CHERNARUS_2)
+		{
+			switch (m_iSelection)
+			{
+				case 0: controller.ADM_RequestTeleportSelf(Vector(6425, 0, 7752)); break; // Novy Sobor
+				case 1: controller.ADM_RequestTeleportSelf(Vector(5218, 0, 7773)); break; // Kabanino
+				case 2: controller.ADM_RequestTeleportSelf(Vector(3632, 0, 5882)); break; // Rogovo
+				case 3: controller.ADM_RequestTeleportSelf(Vector(3385, 0, 4368)); break; // Pavlovo
+				case 4: controller.ADM_RequestTeleportSelf(Vector(12602, 0, 11014)); break; // Svetlojarsk
+				case 5: controller.ADM_RequestTeleportSelf(Vector(4833, 0, 10467)); break; // NWAF
+				case 6: controller.ADM_RequestTeleportSelf(Vector(6146, 0, 1724)); break; // Balota Airfield
+				case 7: controller.ADM_RequestTeleportSelf(Vector(11160, 0, 11510)); break; // Krasnostav Airfield
+				case 8: ShowLocationsChernarus(); break; // Button10 → array idx 8
+				default: ShowTeleport(); break;
 			}
 			return;
 		}
