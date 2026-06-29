@@ -74,13 +74,26 @@ class ADM_AdminMenuOverlay : ScriptedWidgetEventHandler
 
 	protected void DoPollNavKeys()
 	{
-		bool upNow = Debug.KeyState(KeyCode.KC_UP);
-		if (upNow && !m_bNavUpWasDown) OnMenuUp(0, EActionTrigger.DOWN);
-		m_bNavUpWasDown = upNow;
+		// Arrow keys conflict with map panning when the map is open — block UP/DOWN then
+		// but keep Enter working so you can still confirm a highlighted button (e.g. map cursor teleport).
+		bool mapOpen = SCR_MapEntity.GetMapInstance() != null;
 
-		bool downNow = Debug.KeyState(KeyCode.KC_DOWN);
-		if (downNow && !m_bNavDownWasDown) OnMenuDown(0, EActionTrigger.DOWN);
-		m_bNavDownWasDown = downNow;
+		if (!mapOpen)
+		{
+			bool upNow = Debug.KeyState(KeyCode.KC_UP);
+			if (upNow && !m_bNavUpWasDown) OnMenuUp(0, EActionTrigger.DOWN);
+			m_bNavUpWasDown = upNow;
+
+			bool downNow = Debug.KeyState(KeyCode.KC_DOWN);
+			if (downNow && !m_bNavDownWasDown) OnMenuDown(0, EActionTrigger.DOWN);
+			m_bNavDownWasDown = downNow;
+		}
+		else
+		{
+			// Reset so keys don't fire the instant the map closes
+			m_bNavUpWasDown = true;
+			m_bNavDownWasDown = true;
+		}
 
 		bool selNow = Debug.KeyState(KeyCode.KC_RETURN);
 		if (selNow && !m_bNavSelectWasDown) OnMenuSelect(0, EActionTrigger.DOWN);
@@ -459,13 +472,14 @@ class ADM_AdminMenuOverlay : ScriptedWidgetEventHandler
 		m_iSelection = 0;
 		ClearButtons();
 		SetTitle("Teleport Tools");
-		SetStatus("Select a map or use player teleport.");
+		SetStatus("Tip: open the map, hover cursor over terrain, then click 'Map cursor'.");
 		SetInputs("", "", "");
 		AddButton("Button0", "Everon...");
 		AddButton("Button1", "Chernarus...");
 		AddButton("Button2", "Teleport TO player...");
 		AddButton("Button3", "Teleport player TO me...");
-		AddButton("Button4", "Back");
+		AddButton("Button4", "Teleport to map cursor");
+		AddButton("Button5", "Back");
 		RefreshSelection();
 	}
 
@@ -990,6 +1004,16 @@ class ADM_AdminMenuOverlay : ScriptedWidgetEventHandler
 				case 1: ShowLocationsChernarus(); break;
 				case 2: ShowTeleportSelectPlayer(ADM_TeleportSelectMode.TO_PLAYER); break;
 				case 3: ShowTeleportSelectPlayer(ADM_TeleportSelectMode.PLAYER_TO_ME); break;
+				case 4:
+					vector mapPos;
+					if (TryGetMapCursorPosition(mapPos))
+					{
+						controller.ADM_RequestTeleportSelf(mapPos);
+						SetStatus("Teleporting to map cursor position...");
+					}
+					else
+						SetStatus("Open the map first and hover the cursor over the terrain.");
+					break;
 				default: ShowMain(); break;
 			}
 			return;
