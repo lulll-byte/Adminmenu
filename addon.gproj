@@ -1,0 +1,8 @@
+GameProject {
+ ID "Adminmenu"
+ GUID "6A44E2C9B4D74A10"
+ Dependencies {
+  "58D0FB3206B6F859"
+  "E1F672476660F146"
+ }
+}

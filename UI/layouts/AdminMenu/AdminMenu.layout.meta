@@ -1,0 +1,9 @@
+MetaFileClass {
+ Name "{6A44E2C900000004}UI/layouts/AdminMenu/AdminMenu.layout"
+ Configurations {
+  WidgetResourceClass PC {
+  }
+  WidgetResourceClass HEADLESS : PC {
+  }
+ }
+}

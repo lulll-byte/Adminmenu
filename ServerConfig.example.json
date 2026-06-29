@@ -1,0 +1,26 @@
+{
+  "bindAddress": "",
+  "bindPort": 2302,
+  "publicAddress": "",
+  "publicPort": 2302,
+  "game": {
+    "name": "AdminMenu test server",
+    "password": "",
+    "passwordAdmin": "change-me",
+    "scenarioId": "{ECC61978EDCC2B5A}Missions/23_Campaign.conf",
+    "maxPlayers": 16,
+    "visible": false,
+    "mods": [
+      {
+        "modId": "LOCAL_ADMINMENU",
+        "name": "Adminmenu",
+        "version": "1.0.0"
+      }
+    ]
+  },
+  "operating": {
+    "lobbyPlayerSync": true,
+    "playerSaveTime": 120,
+    "aiLimit": -1
+  }
+}

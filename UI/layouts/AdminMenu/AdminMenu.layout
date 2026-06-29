@@ -1,0 +1,159 @@
+FrameWidgetClass {
+ Name "AdminMenuRoot"
+ {
+  ImageWidgetClass "{6A44E2C900007002}" {
+   Name "DimBackground"
+   "Is Visible" 1
+   Slot FrameWidgetSlot "{6A44E2C900007003}" {
+    Anchor 0 0 1 1
+    OffsetLeft 0
+    OffsetTop 0
+    OffsetRight 0
+    OffsetBottom 0
+   }
+   Color 0.008 0.010 0.012 0.55
+  }
+  FrameWidgetClass "{6A44E2C900007004}" {
+   Name "Panel"
+   Slot FrameWidgetSlot "{6A44E2C900007005}" {
+    Anchor 0 0 0 0
+    PositionX 34
+    PositionY 72
+    SizeX 560
+    SizeY 780
+    OffsetLeft 34
+    OffsetTop 72
+    OffsetRight 594
+    OffsetBottom 852
+   }
+   {
+    ImageWidgetClass "{6A44E2C900007006}" {
+     Name "PanelBg"
+     Slot FrameWidgetSlot "{6A44E2C900007007}" {
+      Anchor 0 0 1 1
+      OffsetLeft 0
+      OffsetTop 0
+      OffsetRight 0
+      OffsetBottom 0
+     }
+     Color 0.031 0.039 0.043 0.970
+    }
+    ImageWidgetClass "{6A44E2C900007008}" {
+     Name "HeaderAccent"
+     Slot FrameWidgetSlot "{6A44E2C900007009}" {
+      Anchor 0 0 1 0
+      PositionX 0
+      PositionY 0
+      SizeX 560
+      SizeY 4
+      OffsetLeft 0
+      OffsetTop 0
+      OffsetRight 0
+      OffsetBottom 4
+     }
+     Color 0.910 0.772 0.278 1
+    }
+    TextWidgetClass "{6A44E2C90000700A}" {
+     Name "Title"
+     Slot FrameWidgetSlot "{6A44E2C90000700B}" {
+      Anchor 0 0 0 0
+      PositionX 24
+      PositionY 18
+      SizeX 510
+      SizeY 44
+      OffsetLeft 24
+      OffsetTop 18
+      OffsetRight 534
+      OffsetBottom 62
+     }
+     Text "ADMIN MENU"
+     "Font Size" 32
+     Color 0.910 0.772 0.278 1
+     FontProperties FontProperties "{6A44E2C90000700C}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+     }
+    }
+    TextWidgetClass "{6A44E2C90000700D}" {
+     Name "Status"
+     Slot FrameWidgetSlot "{6A44E2C90000700E}" {
+      Anchor 0 0 0 0
+      PositionX 24
+      PositionY 64
+      SizeX 510
+      SizeY 46
+      OffsetLeft 24
+      OffsetTop 64
+      OffsetRight 534
+      OffsetBottom 110
+     }
+     Text "Loading..."
+     "Font Size" 18
+     Color 0.780 0.780 0.740 1
+     FontProperties FontProperties "{6A44E2C90000700F}" {
+      Font "{3E7733BAC8C831F6}UI/Fonts/RobotoCondensed/RobotoCondensed_Regular.fnt"
+     }
+    }
+    EditBoxWidgetClass "{6A44E2C900007010}" {
+     Name "InputA"
+     Slot FrameWidgetSlot "{6A44E2C900007011}" {
+      Anchor 0 0 0 0
+      PositionX 24
+      PositionY 122
+      SizeX 510
+      SizeY 40
+      OffsetLeft 24
+      OffsetTop 122
+      OffsetRight 534
+      OffsetBottom 162
+     }
+     "Font Size" 18
+     Color 0.970 0.960 0.930 1
+    }
+    EditBoxWidgetClass "{6A44E2C900007012}" {
+     Name "InputB"
+     Slot FrameWidgetSlot "{6A44E2C900007013}" {
+      Anchor 0 0 0 0
+      PositionX 24
+      PositionY 172
+      SizeX 245
+      SizeY 40
+      OffsetLeft 24
+      OffsetTop 172
+      OffsetRight 269
+      OffsetBottom 212
+     }
+     "Font Size" 18
+     Color 0.970 0.960 0.930 1
+    }
+    EditBoxWidgetClass "{6A44E2C900007014}" {
+     Name "InputC"
+     Slot FrameWidgetSlot "{6A44E2C900007015}" {
+      Anchor 0 0 0 0
+      PositionX 289
+      PositionY 172
+      SizeX 245
+      SizeY 40
+      OffsetLeft 289
+      OffsetTop 172
+      OffsetRight 534
+      OffsetBottom 212
+     }
+     "Font Size" 18
+     Color 0.970 0.960 0.930 1
+    }
+    ButtonWidgetClass "{6A44E2C900007018}" { Name "Button0" Slot FrameWidgetSlot "{6A44E2C900007019}" { Anchor 0 0 0 0 PositionX 24 PositionY 232 SizeX 510 SizeY 38 OffsetLeft 24 OffsetTop 232 OffsetRight 534 OffsetBottom 270 } { TextWidgetClass "{6A44E2C90000701A}" { Name "Label" Slot ButtonWidgetSlot "{6A44E2C90000701B}" { HorizontalAlign 3 VerticalAlign 3 } Text "" "Font Size" 19 Color 0.972 0.964 0.937 1 } } }
+    ButtonWidgetClass "{6A44E2C90000701C}" { Name "Button1" Slot FrameWidgetSlot "{6A44E2C90000701D}" { Anchor 0 0 0 0 PositionX 24 PositionY 276 SizeX 510 SizeY 38 OffsetLeft 24 OffsetTop 276 OffsetRight 534 OffsetBottom 314 } { TextWidgetClass "{6A44E2C90000701E}" { Name "Label" Slot ButtonWidgetSlot "{6A44E2C90000701F}" { HorizontalAlign 3 VerticalAlign 3 } Text "" "Font Size" 19 Color 0.972 0.964 0.937 1 } } }
+    ButtonWidgetClass "{6A44E2C900007020}" { Name "Button2" Slot FrameWidgetSlot "{6A44E2C900007021}" { Anchor 0 0 0 0 PositionX 24 PositionY 320 SizeX 510 SizeY 38 OffsetLeft 24 OffsetTop 320 OffsetRight 534 OffsetBottom 358 } { TextWidgetClass "{6A44E2C900007022}" { Name "Label" Slot ButtonWidgetSlot "{6A44E2C900007023}" { HorizontalAlign 3 VerticalAlign 3 } Text "" "Font Size" 19 Color 0.972 0.964 0.937 1 } } }
+    ButtonWidgetClass "{6A44E2C900007024}" { Name "Button3" Slot FrameWidgetSlot "{6A44E2C900007025}" { Anchor 0 0 0 0 PositionX 24 PositionY 364 SizeX 510 SizeY 38 OffsetLeft 24 OffsetTop 364 OffsetRight 534 OffsetBottom 402 } { TextWidgetClass "{6A44E2C900007026}" { Name "Label" Slot ButtonWidgetSlot "{6A44E2C900007027}" { HorizontalAlign 3 VerticalAlign 3 } Text "" "Font Size" 19 Color 0.972 0.964 0.937 1 } } }
+    ButtonWidgetClass "{6A44E2C900007028}" { Name "Button4" Slot FrameWidgetSlot "{6A44E2C900007029}" { Anchor 0 0 0 0 PositionX 24 PositionY 408 SizeX 510 SizeY 38 OffsetLeft 24 OffsetTop 408 OffsetRight 534 OffsetBottom 446 } { TextWidgetClass "{6A44E2C90000702A}" { Name "Label" Slot ButtonWidgetSlot "{6A44E2C90000702B}" { HorizontalAlign 3 VerticalAlign 3 } Text "" "Font Size" 19 Color 0.972 0.964 0.937 1 } } }
+    ButtonWidgetClass "{6A44E2C90000702C}" { Name "Button5" Slot FrameWidgetSlot "{6A44E2C90000702D}" { Anchor 0 0 0 0 PositionX 24 PositionY 452 SizeX 510 SizeY 38 OffsetLeft 24 OffsetTop 452 OffsetRight 534 OffsetBottom 490 } { TextWidgetClass "{6A44E2C90000702E}" { Name "Label" Slot ButtonWidgetSlot "{6A44E2C90000702F}" { HorizontalAlign 3 VerticalAlign 3 } Text "" "Font Size" 19 Color 0.972 0.964 0.937 1 } } }
+    ButtonWidgetClass "{6A44E2C900007030}" { Name "Button6" Slot FrameWidgetSlot "{6A44E2C900007031}" { Anchor 0 0 0 0 PositionX 24 PositionY 496 SizeX 510 SizeY 38 OffsetLeft 24 OffsetTop 496 OffsetRight 534 OffsetBottom 534 } { TextWidgetClass "{6A44E2C900007032}" { Name "Label" Slot ButtonWidgetSlot "{6A44E2C900007033}" { HorizontalAlign 3 VerticalAlign 3 } Text "" "Font Size" 19 Color 0.972 0.964 0.937 1 } } }
+    ButtonWidgetClass "{6A44E2C900007034}" { Name "Button7" Slot FrameWidgetSlot "{6A44E2C900007035}" { Anchor 0 0 0 0 PositionX 24 PositionY 540 SizeX 510 SizeY 38 OffsetLeft 24 OffsetTop 540 OffsetRight 534 OffsetBottom 578 } { TextWidgetClass "{6A44E2C900007036}" { Name "Label" Slot ButtonWidgetSlot "{6A44E2C900007037}" { HorizontalAlign 3 VerticalAlign 3 } Text "" "Font Size" 19 Color 0.972 0.964 0.937 1 } } }
+    ButtonWidgetClass "{6A44E2C900007038}" { Name "Button8" Slot FrameWidgetSlot "{6A44E2C900007039}" { Anchor 0 0 0 0 PositionX 24 PositionY 584 SizeX 510 SizeY 38 OffsetLeft 24 OffsetTop 584 OffsetRight 534 OffsetBottom 622 } { TextWidgetClass "{6A44E2C90000703A}" { Name "Label" Slot ButtonWidgetSlot "{6A44E2C90000703B}" { HorizontalAlign 3 VerticalAlign 3 } Text "" "Font Size" 19 Color 0.972 0.964 0.937 1 } } }
+    ButtonWidgetClass "{6A44E2C90000703C}" { Name "Button9" Slot FrameWidgetSlot "{6A44E2C90000703D}" { Anchor 0 0 0 0 PositionX 24 PositionY 628 SizeX 510 SizeY 38 OffsetLeft 24 OffsetTop 628 OffsetRight 534 OffsetBottom 666 } { TextWidgetClass "{6A44E2C90000703E}" { Name "Label" Slot ButtonWidgetSlot "{6A44E2C90000703F}" { HorizontalAlign 3 VerticalAlign 3 } Text "" "Font Size" 19 Color 0.972 0.964 0.937 1 } } }
+    ButtonWidgetClass "{6A44E2C900007040}" { Name "Button10" Slot FrameWidgetSlot "{6A44E2C900007041}" { Anchor 0 0 0 0 PositionX 24 PositionY 672 SizeX 510 SizeY 38 OffsetLeft 24 OffsetTop 672 OffsetRight 534 OffsetBottom 710 } { TextWidgetClass "{6A44E2C900007042}" { Name "Label" Slot ButtonWidgetSlot "{6A44E2C900007043}" { HorizontalAlign 3 VerticalAlign 3 } Text "" "Font Size" 19 Color 0.972 0.964 0.937 1 } } }
+    ButtonWidgetClass "{6A44E2C900007044}" { Name "Button11" Slot FrameWidgetSlot "{6A44E2C900007045}" { Anchor 0 0 0 0 PositionX 24 PositionY 716 SizeX 510 SizeY 38 OffsetLeft 24 OffsetTop 716 OffsetRight 534 OffsetBottom 754 } { TextWidgetClass "{6A44E2C900007046}" { Name "Label" Slot ButtonWidgetSlot "{6A44E2C900007047}" { HorizontalAlign 3 VerticalAlign 3 } Text "" "Font Size" 19 Color 0.972 0.964 0.937 1 } } }
+   }
+  }
+ }
+}

@@ -1,0 +1,9 @@
+MetaFileClass {
+ Name "{6A44E2C900000003}Configs/AdminMenu/AdminMenuSettings.conf"
+ Configurations {
+  CONFResourceClass PC {
+  }
+  CONFResourceClass HEADLESS : PC {
+  }
+ }
+}

@@ -1,0 +1,9 @@
+MetaFileClass {
+ Name "{6A44E2C900000001}Configs/System/chimeraInputCommon.conf"
+ Configurations {
+  CONFResourceClass PC {
+  }
+  CONFResourceClass HEADLESS : PC {
+  }
+ }
+}

@@ -1,0 +1,9 @@
+MetaFileClass {
+ Name "{6A44E2C900000002}Configs/System/chimeraMenus.conf"
+ Configurations {
+  CONFResourceClass PC {
+  }
+  CONFResourceClass HEADLESS : PC {
+  }
+ }
+}
